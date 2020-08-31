@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+using Newtonsoft.Json;
+
+namespace NeuralCars
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private RaceTrack racetrack;
+        private static string centerpathFilename = @"Resources\data.json";
+        private DispatcherTimer timer;
+        private bool run = true;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+
+            racetrack = new RaceTrack(centerpathFilename);
+            if (run)
+            {
+                timer = new DispatcherTimer();
+                timer.Interval = new TimeSpan(10000);
+                timer.Tick += Timer_Tick;
+                timer.Start();
+            }
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            racetrack.DrawRacetrack(Canvas);
+        }
+
+        private void MainWindow_LayoutUpdated(object sender, EventArgs e)
+        {
+            if (run)
+            {
+                racetrack.DrawRacetrack(Canvas);
+                timer.Start();
+            }
+        }
+
+
+
+        private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var canvas = (Canvas)sender;
+            //racetrack.AddPathPoint(canvas, e.GetPosition(canvas));
+            //racetrack.SetStart(canvas, e.GetPosition(canvas));
+            //racetrack.SetStop(canvas, e.GetPosition(canvas));
+            //racetrack.DrawRacetrack(Canvas);
+        }
+
+
+
+
+
+    }
+}
